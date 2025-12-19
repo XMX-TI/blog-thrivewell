@@ -968,9 +968,13 @@ h3 {
   border: 1px solid #dce8e2;
 }
 .product-benefits li::before {
-  content: "\\2713";
-  color: #2c9c7a;
-  font-weight: 800;
+  content: "";
+  width: 1.1rem;
+  height: 1.1rem;
+  display: inline-block;
+  background: url("../img/check.svg") no-repeat center;
+  background-size: contain;
+  flex-shrink: 0;
 }
 
 .product-checkout {

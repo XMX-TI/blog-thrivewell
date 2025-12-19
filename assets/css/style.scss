@@ -1128,9 +1128,13 @@ h3 {
   border: 1px solid $color-border;
 
   &::before {
-    content: "\\2713";
-    color: $color-fern;
-    font-weight: 800;
+    content: "";
+    width: 1.1rem;
+    height: 1.1rem;
+    display: inline-block;
+    background: url("../img/check.svg") no-repeat center;
+    background-size: contain;
+    flex-shrink: 0;
   }
 }
 
