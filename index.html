@@ -28,7 +28,7 @@
       </div>
       <div class="header-main">
         <div class="container">
-          <a class="brand" href="/">
+          <a class="brand" href="index.html">
             <img
               src="assets/img/logo.webp"
               class="brand-logo"
@@ -43,8 +43,8 @@
             </span>
           </a>
           <nav class="primary-nav">
-            <a class="nav-link is-active" href="/">Home</a>
-            <a class="nav-link" href="/products/">Products</a>
+            <a class="nav-link is-active" href="index.html">Home</a>
+            <a class="nav-link" href="products/">Products</a>
             <a class="nav-link" href="contact.html">Contact</a>
           </nav>
         </div>
@@ -64,7 +64,7 @@
             </p>
             <div class="hero-actions">
               <a class="hero-cta" href="#latest">Read the latest guides</a>
-              <a class="ghost-button" href="/products/"
+              <a class="ghost-button" href="products/"
                 >Browse our supplement picks</a
               >
             </div>
@@ -915,15 +915,68 @@
         const batch = 8;
         let visible = 0;
 
+        // Prioritize loading for above-the-fold cards; defer hidden ones.
+        const lazyObserver =
+          "IntersectionObserver" in window
+            ? new IntersectionObserver(
+                (entries) => {
+                  entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    const img = entry.target;
+                    const src = img.dataset.deferSrc;
+                    if (src) {
+                      img.src = src;
+                      img.removeAttribute("data-defer-src");
+                    }
+                    lazyObserver.unobserve(img);
+                  });
+                },
+                { rootMargin: "200px 0px" }
+              )
+            : null;
+
+        const prepareImages = (card, index) => {
+          const img = card.querySelector("img");
+          if (!img) return;
+          if (index < batch) {
+            img.loading = "eager";
+            img.fetchPriority = "high";
+            return;
+          }
+          const src = img.getAttribute("src");
+          if (src) {
+            img.dataset.deferSrc = src;
+            img.removeAttribute("src");
+            img.loading = "lazy";
+          }
+        };
+
+        const activateImage = (card) => {
+          const img = card.querySelector("img[data-defer-src]");
+          if (!img) return;
+          if (lazyObserver) {
+            lazyObserver.observe(img);
+          } else {
+            img.src = img.dataset.deferSrc;
+            img.removeAttribute("data-defer-src");
+          }
+        };
+
         const showNext = () => {
           const next = cards.slice(visible, visible + batch);
-          next.forEach((card) => card.classList.remove("is-hidden"));
+          next.forEach((card) => {
+            card.classList.remove("is-hidden");
+            activateImage(card);
+          });
           visible += next.length;
           trigger.setAttribute("aria-expanded", visible < cards.length ? "false" : "true");
           if (visible >= cards.length) trigger.disabled = true;
         };
 
-        cards.forEach((card) => card.classList.add("is-hidden"));
+        cards.forEach((card, index) => {
+          card.classList.add("is-hidden");
+          prepareImages(card, index);
+        });
         showNext();
 
         trigger.addEventListener("click", () => {
