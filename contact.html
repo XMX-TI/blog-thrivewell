@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact ThriveWell</title>
+    <meta
+      name="description"
+      content="Reach the ThriveWell team for support, partnership inquiries, or feedback about our wellness guides."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="icon" href="assets/img/logo.webp" type="image/webp" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-top">
+        <p>Steady, science-aware wellness guidance for everyday calm.</p>
+      </div>
+      <div class="header-main">
+        <div class="container">
+          <a class="brand" href="/">
+            <img
+              src="assets/img/logo.webp"
+              class="brand-logo"
+              alt="ThriveWell"
+              width="175"
+              height="177"
+              decoding="async"
+            />
+            <span class="brand-text">
+              <span class="brand-name">ThriveWell</span>
+              <span class="brand-tagline">Wellness Journal</span>
+            </span>
+          </a>
+          <nav class="primary-nav">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/products/">Products</a>
+            <a class="nav-link is-active" href="contact.html">Contact</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-content">
+        <div class="container">
+          <header class="page-header">
+            <h1>Contact Us</h1>
+            <p>We are here to support your wellness journey.</p>
+          </header>
+
+          <div class="content-wrapper">
+            <p>
+              We read every note. Whether you have a question about our guides,
+              want to partner, or need help with an order, reach us using the
+              details below.
+            </p>
+
+            <h2>Contacting Support</h2>
+
+            <p>
+              <strong>Email:</strong>
+              <a href="mailto:hello@thrivewell.com" id="support-email"
+                >hello@thrivewell.com</a
+              >
+            </p>
+
+            <p id="phone-section" style="display: none">
+              <strong>Phone:</strong> <span id="support-phone"></span>
+            </p>
+
+            <p>
+              Our team aims to respond within one business day. If you provide a
+              phone number, we will reach back via call or text with the same
+              care as our written guidance.
+            </p>
+
+            <p>
+              Thank you for trusting <strong><span id="company-name">ThriveWell</span></strong
+              > with your wellness questions.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-info">
+            <p class="copyright">
+              &copy; 2025 ThriveWell. Articles and product notes are educational
+              only and not medical advice. Please consult a licensed health
+              professional before changing your care plan.
+            </p>
+            <p class="footer-address">
+              19655 E 35th Drive Suite 100 Aurora, CO 80011
+            </p>
+            <p class="footer-contact">
+              Contact:
+              <a href="mailto:hello@thrivewell.com" id="footer-email"
+                >hello@thrivewell.com</a
+              >
+              <span id="footer-phone-container" style="display: none">
+                |
+                <span id="footer-phone"></span>
+              </span>
+            </p>
+          </div>
+          <nav class="footer-nav">
+            <a href="privacy.html">Privacy</a>
+            <a href="disclaimer.html">Disclaimer</a>
+            <a href="terms.html">Terms</a>
+          </nav>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const productParam = urlParams.get("product");
+      const emailParam = urlParams.get("email");
+      const phoneParam = urlParams.get("phone");
+
+      let companyName = "ThriveWell";
+      if (productParam) {
+        companyName = productParam
+          .split("-")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
+      }
+      document.getElementById("company-name").textContent = companyName;
+
+      const supportEmail = emailParam || "hello@thrivewell.com";
+      const emailLink = document.getElementById("support-email");
+      emailLink.href = "mailto:" + supportEmail;
+      emailLink.textContent = supportEmail;
+
+      if (phoneParam) {
+        document.getElementById("phone-section").style.display = "block";
+        document.getElementById("support-phone").textContent = phoneParam;
+      }
+
+      const footerEmailEl = document.getElementById("footer-email");
+      if (footerEmailEl) {
+        footerEmailEl.href = "mailto:" + supportEmail;
+        footerEmailEl.textContent = supportEmail;
+      }
+
+      const footerPhoneContainer = document.getElementById(
+        "footer-phone-container"
+      );
+      const footerPhone = document.getElementById("footer-phone");
+      if (phoneParam && footerPhoneContainer && footerPhone) {
+        footerPhoneContainer.style.display = "inline";
+        footerPhone.textContent = phoneParam;
+      }
+    </script>
+  </body>
+</html>
